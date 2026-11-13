@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EventSphere | Discover Events</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a href="/" class="logo">
+        <span class="logo-icon">E</span>
+        EventSphere
+    </a>
+
+	<nav>
+	    <a href="#discover">Discover</a>
+	    <a href="#about">About</a>
+	</nav>
+
+	<!-- Authentication buttons -->
+	<div class="auth-nav" id="authNav">
+	    <a href="login.html" class="auth-nav-button signin-button">
+	        Sign In
+	    </a>
+
+	    <a href="signup.html" class="auth-nav-button signup-button">
+	        Sign Up
+	    </a>
+	</div>
+
+	<a href="#discover" class="nav-button">
+	    Explore Events
+	</a>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <span class="tagline">
+                YOUR CITY. YOUR COMMUNITY. YOUR MOMENT.
+            </span>
+
+            <h1>
+                Find your next
+                <span>big experience.</span>
+            </h1>
+
+            <p>
+                Discover fests, hackathons, music events,
+                workshops and experiences happening around you.
+            </p>
+
+            <a href="#discover" class="primary-button">
+                Explore Events →
+            </a>
+
+        </div>
+
+        <div class="hero-visual">
+
+            <div class="visual-card">
+                <span>MAKE IT HAPPEN</span>
+                <h2>Meet.<br>Build.<br>Belong.</h2>
+                <div class="visual-dot"></div>
+            </div>
+
+            <div class="floating-tag tag-one">
+                ✦ Live Events
+            </div>
+
+            <div class="floating-tag tag-two">
+                ↗ New Connections
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="discover-section" id="discover">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="section-tag">THE EVENT RADAR</span>
+                <h2>Discover Events</h2>
+                <p>Find something worth showing up for.</p>
+            </div>
+
+        </div>
+
+
+        <div class="filters">
+
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search events, venues or interests..."
+            >
+
+            <select id="categoryFilter">
+                <option value="all">All Categories</option>
+                <option value="Technology">Technology</option>
+                <option value="Hackathon">Hackathon</option>
+                <option value="Music">Music</option>
+                <option value="Business">Business</option>
+                <option value="Workshop">Workshop</option>
+            </select>
+
+        </div>
+
+
+        <div id="eventGrid" class="event-grid">
+
+            <div class="loading">
+                Loading events...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="community-section" id="about">
+
+        <div>
+            <span class="section-tag">MORE THAN A TICKET</span>
+
+            <h2>
+                Go together.<br>
+                Make it memorable.
+            </h2>
+        </div>
+
+        <p>
+            Register for an event and connect with its attendee
+            community. EventSphere helps people discover events
+            and connect with other participants.
+        </p>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <div class="footer-content">
+
+        <a href="/" class="logo">
+            <span class="logo-icon">E</span>
+            EventSphere
+        </a>
+
+        <p>Discover. Connect. Experience.</p>
+
+    </div>
+
+</footer>
+
+
+<!-- REGISTRATION MODAL -->
+
+<dialog id="registerDialog">
+
+    <div class="modal-header">
+
+        <div>
+            <span class="section-tag">SAVE YOUR SPOT</span>
+            <h2 id="modalEventTitle">Event Registration</h2>
+        </div>
+
+        <button id="closeDialog" class="close-button">
+            ×
+        </button>
+
+    </div>
+
+
+    <form id="registrationForm">
+
+        <input
+            type="hidden"
+            id="eventId"
+        >
+
+        <label>
+            Full Name
+
+            <input
+                type="text"
+                id="attendeeName"
+                name="attendeeName"
+                placeholder="Enter your name"
+                required
+                maxlength="120"
+            >
+        </label>
+
+
+        <label>
+            Email Address
+
+            <input
+                type="email"
+                id="attendeeEmail"
+                name="email"
+                placeholder="Enter your email"
+                required
+                maxlength="254"
+            >
+        </label>
+
+
+        <button type="submit" class="primary-button full-button">
+            Confirm Registration
+        </button>
+
+    </form>
+
+
+    <div id="registrationResult" class="result-message" hidden></div>
+
+</dialog>
+
+
+<script src="app.js"></script>
+<script type="module" src="js/auth-nav.js"></script>
+
+</body>
+</html>

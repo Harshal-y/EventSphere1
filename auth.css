@@ -1,0 +1,214 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f8fb;
+    color: #23354b;
+    min-height: 100vh;
+}
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: white;
+    padding: 38px;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(35, 53, 75, 0.09);
+}
+
+.brand {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand h1 {
+    font-size: 30px;
+    color: #f26730;
+    margin-bottom: 8px;
+}
+
+.brand p {
+    color: #77808d;
+    font-size: 14px;
+}
+
+.auth-card h2 {
+    margin-bottom: 8px;
+    font-size: 24px;
+}
+
+.auth-subtitle {
+    color: #77808d;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #dce1e8;
+    border-radius: 9px;
+    font-size: 15px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #f26730;
+    box-shadow: 0 0 0 3px rgba(242, 103, 48, 0.12);
+}
+
+.auth-button {
+    width: 100%;
+    padding: 14px;
+    background: #f26730;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 9px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.auth-button:hover {
+    background: #dc5725;
+}
+
+.auth-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.auth-message {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.auth-message:empty {
+    display: none;
+}
+
+.auth-message.error {
+    background: #fff0ef;
+    color: #b42318;
+}
+
+.auth-message.success {
+    background: #eaf8ef;
+    color: #187a3d;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 23px;
+    font-size: 14px;
+    color: #77808d;
+}
+
+.auth-footer a {
+    color: #f26730;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.back-home {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    color: #23354b;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back-home:hover,
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 26px 20px;
+    }
+}
+
+
+/* EventSphere Account Page */
+
+.account-card {
+    max-width: 520px;
+}
+
+.account-details {
+    margin: 25px 0;
+    text-align: left;
+}
+
+.account-detail {
+    padding: 15px 0;
+    border-bottom: 1px solid #e8e8e8;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.account-detail span {
+    color: #777;
+    font-size: 13px;
+}
+
+.account-detail strong {
+    color: #23354B;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.auth-subtitle {
+    color: #777;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.auth-link {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    color: #F26730;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+.auth-message.success {
+    color: #16803c;
+}
