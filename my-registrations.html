@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Registrations | EventSphere</title>
+
+    <link rel="stylesheet" href="auth.css">
+</head>
+
+<body>
+
+    <main class="auth-container">
+
+        <section class="auth-card account-card">
+
+            <div class="brand">
+                <h1>Event<span>Sphere</span></h1>
+                <p>Your events. Your community.</p>
+            </div>
+
+            <h2>My Registrations</h2>
+
+            <p class="auth-subtitle">
+                Keep track of the events you've signed up for.
+            </p>
+
+            <div id="registrationsMessage" class="auth-message">
+                Loading your registrations...
+            </div>
+
+            <div id="registrationsList" class="registrations-list">
+                <!-- Registrations will be loaded here -->
+            </div>
+
+            <button
+                type="button"
+                id="refreshRegistrationsButton"
+                class="auth-button">
+                Refresh Registrations
+            </button>
+
+            <a href="account.html" class="auth-link">
+                Back to My Account
+            </a>
+
+            <a href="index.html" class="auth-link">
+                Explore More Events
+            </a>
+
+        </section>
+
+    </main>
+
+    <script type="module" src="js/my-registrations.js"></script>
+
+</body>
+
+</html>
