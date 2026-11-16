@@ -40,6 +40,12 @@ function showLoggedInButtons() {
             "auth-nav-button signin-button")
     );
 
+    // My Registrations link
+    authNav.appendChild(
+        createLink("My Registrations", "my-registrations.html",
+            "auth-nav-button signin-button")
+    );
+
     const logoutButton = document.createElement("button");
 
     logoutButton.textContent = "Logout";
