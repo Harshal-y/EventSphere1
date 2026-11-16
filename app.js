@@ -5,22 +5,19 @@ import { supabase } from "./js/supabase.js";
 /* DOM ELEMENTS */
 
 const eventGrid = document.getElementById("eventGrid");
-
 const searchInput = document.getElementById("searchInput");
-
 const categoryFilter = document.getElementById("categoryFilter");
 
 const registerDialog = document.getElementById("registerDialog");
-
 const registrationForm = document.getElementById("registrationForm");
-
 const closeDialog = document.getElementById("closeDialog");
 
 const registrationResult = document.getElementById("registrationResult");
-
 const modalEventTitle = document.getElementById("modalEventTitle");
-
 const eventIdInput = document.getElementById("eventId");
+
+const attendeeNameInput = document.getElementById("attendeeName");
+const attendeeEmailInput = document.getElementById("attendeeEmail");
 
 
 /* GLOBAL EVENT DATA */
@@ -28,20 +25,16 @@ const eventIdInput = document.getElementById("eventId");
 let allEvents = [];
 
 
-/* ESCAPE HTML TO PREVENT HTML INJECTION */
+/* ESCAPE HTML */
 
 function safe(value) {
 
     return String(value ?? "").replace(/[&<>"']/g, char => ({
 
         "&": "&amp;",
-
         "<": "&lt;",
-
         ">": "&gt;",
-
         '"': "&quot;",
-
         "'": "&#39;"
 
     })[char]);
@@ -54,23 +47,18 @@ function safe(value) {
 function formatDate(value) {
 
     if (!value) {
-
         return "Date to be announced";
-
     }
 
     const date = new Date(value);
 
     if (Number.isNaN(date.getTime())) {
-
         return "Date to be announced";
-
     }
 
     return new Intl.DateTimeFormat("en-IN", {
 
         dateStyle: "medium",
-
         timeStyle: "short"
 
     }).format(date);
@@ -85,17 +73,13 @@ function formatPrice(price) {
     const amount = Number(price || 0);
 
     if (amount === 0) {
-
         return "Free";
-
     }
 
     return new Intl.NumberFormat("en-IN", {
 
         style: "currency",
-
         currency: "INR",
-
         maximumFractionDigits: 2
 
     }).format(amount);
@@ -116,13 +100,9 @@ function renderEvents() {
         const searchableText = [
 
             event.title,
-
             event.description,
-
             event.category,
-
             event.venue,
-
             event.city
 
         ].join(" ").toLowerCase();
@@ -336,9 +316,7 @@ async function loadEvents() {
 
 
         if (error) {
-
             throw error;
-
         }
 
 
@@ -434,16 +412,75 @@ async function loadEvents() {
 }
 
 
+/* GET LOGGED-IN USER DETAILS */
+
+async function loadUserDetails() {
+
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error) {
+        throw error;
+    }
+
+    const user = data.user;
+
+    if (!user) {
+        return null;
+    }
+
+
+    /* GET PROFILE FROM SUPABASE */
+
+    const { data: profile, error: profileError } = await supabase
+
+        .from("profiles")
+
+        .select("full_name")
+
+        .eq("id", user.id)
+
+        .maybeSingle();
+
+
+    if (profileError) {
+        throw profileError;
+    }
+
+
+    const fullName =
+
+        profile?.full_name ||
+
+        user.user_metadata?.full_name ||
+
+        user.user_metadata?.name ||
+
+        user.email?.split("@")[0] ||
+
+        "EventSphere User";
+
+
+    return {
+
+        id: user.id,
+
+        name: fullName,
+
+        email: user.email || ""
+
+    };
+
+}
+
+
 /* OPEN REGISTRATION MODAL */
 
-eventGrid.addEventListener("click", event => {
+eventGrid.addEventListener("click", async event => {
 
     const button = event.target.closest("[data-event-id]");
 
     if (!button) {
-
         return;
-
     }
 
 
@@ -455,18 +492,17 @@ eventGrid.addEventListener("click", event => {
 
 
     if (!selectedEvent) {
-
         return;
-
     }
 
+
+    /* RESET FORM BEFORE SETTING EVENT ID */
+
+    registrationForm.reset();
 
     eventIdInput.value = selectedEvent.id;
 
     modalEventTitle.textContent = selectedEvent.title;
-
-
-    registrationForm.reset();
 
 
     registrationResult.innerHTML = "";
@@ -476,7 +512,46 @@ eventGrid.addEventListener("click", event => {
     registrationResult.hidden = true;
 
 
+    /* USER DETAILS ARE READ-ONLY */
+
+    attendeeNameInput.readOnly = true;
+
+    attendeeEmailInput.readOnly = true;
+
+    attendeeNameInput.value = "";
+
+    attendeeEmailInput.value = "";
+
+
+    /* REMOVE REQUIRED VALIDATION FROM DISPLAY-ONLY FIELDS */
+
+    attendeeNameInput.removeAttribute("required");
+
+    attendeeEmailInput.removeAttribute("required");
+
+
     registerDialog.showModal();
+
+
+    /* LOAD CURRENT USER DETAILS */
+
+    try {
+
+        const user = await loadUserDetails();
+
+        if (user) {
+
+            attendeeNameInput.value = user.name;
+
+            attendeeEmailInput.value = user.email;
+
+        }
+
+    } catch (error) {
+
+        console.error("Unable to load user details:", error);
+
+    }
 
 });
 
@@ -514,45 +589,69 @@ function showRegistrationResult(message, type) {
 }
 
 
-/* REGISTER FOR EVENT */
+/* ADD TELEGRAM COMMUNITY LINK */
 
-/*
-   TEMPORARY EXISTING SPRING BOOT REGISTRATION.
+function addTelegramLink(url) {
 
-   We will replace this with Supabase RPC:
-   register_for_event(p_event_id)
+    if (!url) {
+        return;
+    }
 
-   Do not use this old handler for the GitHub Pages
-   version once the Supabase registration migration is complete.
-*/
+    try {
+
+        const parsedUrl = new URL(url);
+
+        if (parsedUrl.protocol !== "https:") {
+            return;
+        }
+
+
+        const link = document.createElement("a");
+
+        link.href = parsedUrl.href;
+
+        link.target = "_blank";
+
+        link.rel = "noopener noreferrer";
+
+        link.className = "telegram-link";
+
+        link.textContent = "Join Event Telegram Community";
+
+
+        registrationResult.appendChild(
+
+            document.createElement("br")
+
+        );
+
+        registrationResult.appendChild(link);
+
+
+    } catch (error) {
+
+        console.warn("Invalid Telegram invitation URL:", error);
+
+    }
+
+}
+
+
+/* REGISTER FOR EVENT USING SUPABASE */
 
 registrationForm.addEventListener("submit", async event => {
 
     event.preventDefault();
 
 
-    const attendeeName = document
-
-        .getElementById("attendeeName")
-
-        .value.trim();
-
-
-    const email = document
-
-        .getElementById("attendeeEmail")
-
-        .value.trim();
-
-
     const eventId = eventIdInput.value;
 
 
-    if (!attendeeName || !email || !eventId) {
+    if (!eventId) {
 
         showRegistrationResult(
 
-            "Please complete all registration fields.",
+            "Invalid event. Please try again.",
 
             "error"
 
@@ -577,96 +676,139 @@ registrationForm.addEventListener("submit", async event => {
 
     try {
 
-        const response = await fetch(
 
-            `/api/registrations`,
+        /* 1. VERIFY LOGIN */
 
-            {
-
-                method: "POST",
-
-                headers: {
-
-                    "Content-Type": "application/json"
-
-                },
-
-                body: JSON.stringify({
-
-                    eventId,
-
-                    attendeeName,
-
-                    email
-
-                })
-
-            }
-
-        );
+        const user = await loadUserDetails();
 
 
-        const result = await response.json();
+        if (!user) {
+
+            showRegistrationResult(
+
+                "Please sign in before registering for an event.",
+
+                "error"
+
+            );
+
+            window.location.href = "login.html";
+
+            return;
+
+        }
 
 
-        if (!response.ok) {
+        /* 2. UPDATE USER DETAILS IN MODAL */
+
+        attendeeNameInput.value = user.name;
+
+        attendeeEmailInput.value = user.email;
+
+
+        /* 3. REGISTER THROUGH SUPABASE RPC */
+
+        const { data: registrationData, error: registrationError } =
+
+            await supabase.rpc("register_for_event", {
+
+                p_event_id: eventId
+
+            });
+
+
+        if (registrationError) {
+
+            throw registrationError;
+
+        }
+
+
+        if (!registrationData?.success) {
 
             throw new Error(
 
-                result.message ||
+                registrationData?.message ||
 
-                "Registration failed. Please try again."
+                "Registration could not be completed."
 
             );
 
         }
 
 
+        /* 4. SHOW SUCCESS MESSAGE */
+
         showRegistrationResult(
 
-            result.message,
+            registrationData.message ||
+
+            "You have successfully registered!",
 
             "success"
 
         );
 
 
-        /* DISPLAY TELEGRAM INVITE AFTER SUCCESSFUL REGISTRATION */
+        /* 5. GET TELEGRAM INVITE LINK */
 
-        if (result.telegramInviteLink) {
+        try {
 
-            const link = document.createElement("a");
+            const {
 
-            link.href = result.telegramInviteLink;
+                data: telegramLink,
 
-            link.target = "_blank";
+                error: telegramError
 
-            link.rel = "noopener noreferrer";
+            } = await supabase.rpc(
 
-            link.className = "telegram-link";
+                "get_event_telegram_link",
 
-            link.textContent = "Join Event Telegram Community";
+                {
 
+                    p_event_id: eventId
 
-            registrationResult.appendChild(
-
-                document.createElement("br")
+                }
 
             );
 
-            registrationResult.appendChild(link);
+
+            if (telegramError) {
+
+                throw telegramError;
+
+            }
+
+
+            if (telegramLink) {
+
+                addTelegramLink(telegramLink);
+
+            }
+
+        } catch (telegramError) {
+
+            console.warn(
+
+                "Telegram link unavailable:",
+
+                telegramError
+
+            );
 
         }
 
 
-        registrationForm.reset();
-
-
     } catch (error) {
+
+        console.error("Supabase registration error:", error);
+
 
         showRegistrationResult(
 
-            error.message,
+            error.message ||
+
+            "Registration failed. Please try again.",
 
             "error"
 
