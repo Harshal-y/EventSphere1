@@ -212,3 +212,96 @@ body {
 .auth-message.success {
     color: #16803c;
 }
+
+
+/* =====================================
+   MY REGISTRATIONS PAGE
+===================================== */
+
+.registrations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin: 25px 0;
+    width: 100%;
+}
+
+.registration-card {
+    background: #F7F8FB;
+    border: 1px solid #e5e8ef;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.registration-title {
+    color: #23354B;
+    font-size: 19px;
+    margin: 0 0 12px;
+}
+
+.registration-detail {
+    color: #5d6878;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 7px 0;
+    overflow-wrap: anywhere;
+}
+
+.registration-status {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: capitalize;
+    padding: 6px 11px;
+    border-radius: 20px;
+    margin: 0 0 12px;
+}
+
+.status-confirmed {
+    background: #e5f6eb;
+    color: #237a43;
+}
+
+.status-cancelled {
+    background: #fdeaea;
+    color: #b83232;
+}
+
+.registration-card .auth-button {
+    margin-top: 14px;
+    margin-right: 8px;
+    width: auto;
+    min-width: 180px;
+    padding: 11px 16px;
+    font-size: 13px;
+}
+
+.registration-card .cancel-registration-button {
+    background: #fff;
+    color: #d94835;
+    border: 1px solid #d94835;
+}
+
+.registration-card .cancel-registration-button:hover {
+    background: #d94835;
+    color: #fff;
+}
+
+.registration-card button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    .registration-card {
+        padding: 16px;
+    }
+
+    .registration-card .auth-button {
+        width: 100%;
+        margin-right: 0;
+    }
+}
